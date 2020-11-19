@@ -1,0 +1,48 @@
+# Don't track content of these folders
+outputs/
+model/
+logs/
+__pycache__/
+tutorial/
+
+core
+demo.py
+evaluate_gpu_naic.py
+evaluate_gpu.py
+evaluate_rerank.py
+evaluate.py
+model.py
+prepare.py
+random_erasing.py
+re_ranking.py
+test.py
+test_naic.py
+train.py
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+*.mat
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.mat
+*.jpg
+*.npy
+*.pt
+*.pth
