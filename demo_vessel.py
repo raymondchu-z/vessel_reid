@@ -12,7 +12,7 @@ import matplotlib.gridspec as gridspec#调用网格
 # Evaluate
 parser = argparse.ArgumentParser(description='Demo')
 parser.add_argument('--query_index', default=777, type=int, help='test_image_index')
-parser.add_argument('--data_dir',default='../Market/pytorch',type=str, help='./test_data')
+parser.add_argument('--data_dir',default='/home/zlm/dataset/vessel_reid/pytorch',type=str, help='./test_data')
 parser.add_argument('--name', default='ft_ResNet50', type=str, help='save model path')
 parser.add_argument('--gpu_ids',default='0', type=str,help='gpu_ids: e.g. 0  0,1,2  0,2')
 opt = parser.parse_args()

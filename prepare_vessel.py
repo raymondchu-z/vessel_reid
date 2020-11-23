@@ -35,7 +35,7 @@ dateset_path = '/home/zlm/dataset/vessel_reid'
 if not os.path.isdir(all_IMO_path):
     print('please change the download_path')
 
-save_path = dateset_path + '/pytorch'
+save_path = dateset_path + '/pytorch2'
 if not os.path.isdir(save_path):
     os.mkdir(save_path)
 
@@ -64,11 +64,12 @@ for eachLine in test_lines:
     IMO_list = IMOs.split(',')
     test_list.extend(IMO_list)
 test_file.close()
+print("get trainval_list and test_list\n")
 #---------------------------------------
 #train_all
 #根据trainval_list将一个IMO号下的文件复制到目标文件夹
 
-trainval_save_path = dateset_path + '/pytorch/train_all'
+trainval_save_path = save_path + '/train_all'
 
 if not os.path.isdir(trainval_save_path):
     os.mkdir(trainval_save_path)
@@ -79,12 +80,12 @@ for IMO_dir in trainval_list:
     if os.path.isdir(dst_path):
         shutil.rmtree(dst_path) #指的是IMO文件夹
     shutil.copytree(src_path, dst_path)
-
+print("train_all cone\n")
 #---------------------------------------
 #train_val
 #根据train_all里的文件，分成train和val，val是每个IMO下的一张
-train_save_path = dateset_path + '/pytorch/train'
-val_save_path = dateset_path + '/pytorch/val'
+train_save_path = save_path + '/train'
+val_save_path = save_path + '/val'
 
 if not os.path.isdir(train_save_path):
     os.mkdir(train_save_path)
@@ -106,14 +107,14 @@ if os.path.exists(trainval_save_path):
             src_file = os.path.join(src_path,file)
             dst_file = os.path.join(dst_path,file)
             shutil.copyfile(src_file, dst_file)
-
+print("train_val done\n")
 #-----------------------------------------
-#gallery
+#gallery and query
 #根据test_list找到IMO,再根据file_seleted_label.csv分成两部分，因为有的文件夹下没有file_label.csv
 #
 
-gallery_save_path = dateset_path + '/pytorch/gallery'
-query_save_path = dateset_path + '/pytorch/query'
+gallery_save_path = save_path + '/gallery'
+query_save_path = save_path + '/query'
 
 if not os.path.isdir(gallery_save_path):
     os.mkdir(gallery_save_path)
@@ -141,7 +142,7 @@ for IMO_dir in test_list:
         if not os.path.isdir(dst_path):#第一次进入
             os.mkdir(dst_path)
         shutil.copyfile(src_path, dst_path + "/" +name)
-
+print("gallery and query done\n")
         
 
 

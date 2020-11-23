@@ -27,6 +27,8 @@ for str_id in str_ids:
 if len(gpu_ids)>0:
     torch.cuda.set_device(gpu_ids[0])
 #######################################################################
+# find_in_n_pics = 11
+#######################################################################
 # Evaluate
 def evaluate(qf,ql,gf,gl):
     query = qf.view(-1,1)
@@ -38,7 +40,7 @@ def evaluate(qf,ql,gf,gl):
     index = np.argsort(score)  #from small to large
     index = index[::-1]#size为126474，即gallery的size，经过score排序的 
     #index是根据qf和gf计算出来的score从大到小排序的 gl的下标，即预测值。
-    # index = index[0:2000]#在这里切片可以只计算前一部分的rank和map
+    # index = index[0:find_in_n_pics]#在这里切片可以只计算前一部分的rank和map
     # good index
     query_index = np.argwhere(gl==ql)#在gl里找和ql相同的index，即query_index是GT
     ap_CMC = compute_mAP(index, query_index)#预测值和gt
@@ -62,7 +64,8 @@ def compute_mAP(index, query_index):
     cmc[rows_good[0]:] = 1#从找到的第一个开始，后面全部置1，也就是说单张图片的查询，rank只有0或1
     # the value of mAP only changed when it meets the true-matches。
     # ngood是当前查询图片的gt的数量
-    for i in range(ngood):
+    # ngood = len(rows_good)# 测试用
+    for i in range(ngood):#正常的计算
         d_recall = 1.0/ngood#recall是每一轮固定的，分成1/gt份
         precision = (i+1)*1.0/(rows_good[i]+1)#第i个正确返回图片/第i个返回图片
         if rows_good[i]!=0:#不是0
@@ -90,6 +93,7 @@ gallery_feature = gallery_feature.cuda()
 
 print(query_feature.shape)
 CMC = torch.IntTensor(len(gallery_label)).zero_()
+# CMC = torch.IntTensor(find_in_n_pics).zero_()
 ap = 0.0
 ap_list = []
 CMC_list = []
