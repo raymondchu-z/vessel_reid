@@ -11,6 +11,7 @@ import numpy as np
 import os
 import argparse
 import pandas as pd
+import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='Test')
 parser.add_argument('--name', default='ft_ResNet50', type=str, help='save model path')
@@ -139,7 +140,7 @@ ap_df.insert(1, 'label',query_label)
 ap_df['label'] = ap_df['label'].astype(str)
 ap_df['filename'] = ap_df['filename'].astype(str)
 
-query_path = "/home/zlm/dataset/vessel_reid/pytorch/query/"
+query_path = "/home/zlm/dataset/vessel_reid/pytorch2/query/"
 filepath = query_path + ap_df['label'] + '/' + ap_df['filename'] + '.jpg'
 
 ap_df.insert(3, 'filepath',filepath)
@@ -149,3 +150,11 @@ filepath_path = './model/%s/filepath.csv'%opt.name
 ap_df.to_csv(filepath_path,columns=['filepath'],index=0)
 # ap_df.to_csv(ap_path,columns=['filepath'],index=0)
 
+#####draw ap kde
+plt.figure()
+data = pd.Series(ap_df["ap"])
+ax = data.hist(bins = 50) 
+ax.set_xlabel('ap')
+ax = data.plot(kind="kde",secondary_y = True, xlim=(-0.1,1.1))
+# plt.legend()
+ax.figure.savefig('./model/%s/ap_curve.png'%opt.name)
